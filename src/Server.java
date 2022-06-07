@@ -2,24 +2,41 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class Server implements Runnable {
 
-  public static void main(String[] args) {
-    int port = Integer.parseInt(args[0]);
-    try (
-      ServerSocket serverSocket = new ServerSocket(port,5, InetAddress.getByName("192.168.86.38"));
-      Socket clientSocket = serverSocket.accept();
-      PrintWriter output = new PrintWriter(clientSocket.getOutputStream(),true); //writing to socket
-      BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) //reading from socket
-    {
-      String input;
-      while ((input=reader.readLine())!=null) {
-        System.out.println(input);
+
+  private PrintWriter output;
+  private BufferedReader reader;
+  Socket clientSocket;
+  private String name;
+
+  public Server(Socket theclient) {
+    clientSocket = theclient;
+    try {
+      output = new PrintWriter(clientSocket.getOutputStream(),
+          true); //writing to socket
+      reader = new BufferedReader(
+          new InputStreamReader(clientSocket.getInputStream())); //reading from socket
+    } catch (IOException e) {
+      e.printStackTrace();
+      System.out.println("thread creation error");
+    }
+  }
+
+  public void setName(String name) {
+    this.name = name;
+
+  }
+
+  @Override
+  public void run() {
+    String input;
+    try {
+      while ((input = reader.readLine()) != null) {
+
+        System.out.println(name + " " + input);
         if (input.equals("")) {
           break;
         }
