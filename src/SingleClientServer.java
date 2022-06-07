@@ -14,6 +14,9 @@ public class SingleClientServer {
     try (
         ServerSocket serverSocket = new ServerSocket(port, 5,
             InetAddress.getByName("192.168.86.38"));
+//        ServerSocket serverSocket = new ServerSocket(port, 5,
+//            InetAddress.getByName("localhost")); //alternative 1
+//        ServerSocket serverSocket = new ServerSocket(port); //alternative 2
         Socket clientSocket = serverSocket.accept();
         PrintWriter output = new PrintWriter(clientSocket.getOutputStream(),
             true); //writing to socket

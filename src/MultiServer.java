@@ -9,16 +9,19 @@ import java.net.Socket;
 public class MultiServer {
 
   public static void main(String[] args) {
-    int port = Integer.parseInt(args[0]);
+    String serverName = args[0];
+    int port = Integer.parseInt(args[1]);
     try {
 
-      ServerSocket serverSocket = new ServerSocket(port, 5, InetAddress.getByName("192.168.86.38"));
+      ServerSocket serverSocket = new ServerSocket(port, 5, InetAddress.getByName(serverName));
+      System.out.println(InetAddress.getByName(serverName));
+      System.out.println(InetAddress.getByName("localhost"));
       System.out.println("multiserver running");
       while (true) {
         Socket client = serverSocket.accept();
         Server server = new Server(client);
         Thread thread = new Thread(server);
-//        server.setName(thread.getName());
+        server.setName(thread.getName());
         thread.start();
 
       }

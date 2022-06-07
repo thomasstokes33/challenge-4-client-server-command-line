@@ -41,7 +41,7 @@ public class Server implements Runnable {
           break;
         }
       }
-      System.out.println("exit");
+      System.out.println(name + " exit");
     } catch (IOException e) {
       e.printStackTrace();
     }
